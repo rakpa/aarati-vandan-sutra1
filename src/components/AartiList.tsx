@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent } from "@/components/ui/card";
 
 export interface AartiItem {
   id: string;
@@ -24,31 +23,30 @@ const AartiList: React.FC<AartiListProps> = ({ aartis }) => {
   }, {} as Record<string, AartiItem[]>);
 
   return (
-    <div className="space-y-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {Object.entries(groupedAartis).map(([deity, deityAartis]) => (
-        <Card key={deity} className="border border-divine/20 hover:border-divine/40">
-          <CardContent className="p-2">
-            <h2 className="text-2xl font-bold text-divine mb-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-divine-gold/20 flex items-center justify-center">
-                <span className="text-2xl text-divine font-bold">{deity.charAt(0)}</span>
-              </div>
-              {deity}
-            </h2>
-            <div className="space-y-3">
-              {deityAartis.map((aarti) => (
-                <Link 
-                  key={aarti.id} 
-                  to={`/aarti/${aarti.id}`}
-                  className="block rounded-lg hover:bg-divine/5 transition-colors"
-                >
-                  <span className="text-gray-700 hover:text-divine transition-colors">
-                    {aarti.title}
-                  </span>
-                </Link>
-              ))}
+        <div
+          key={deity}
+          className="bg-white rounded-xl border border-orange-100 p-8 flex flex-col shadow-sm"
+        >
+          <div className="flex items-center mb-6">
+            <div className="w-24 h-24 rounded-full bg-yellow-100 flex items-center justify-center mr-6">
+              <span className="text-5xl font-bold text-divine">{deity.charAt(0)}</span>
             </div>
-          </CardContent>
-        </Card>
+            <span className="text-3xl font-bold text-divine">{deity}</span>
+          </div>
+          <div className="flex flex-col gap-2 ml-32">
+            {deityAartis.map((aarti) => (
+              <Link
+                key={aarti.id}
+                to={`/aarti/${aarti.id}`}
+                className="block text-lg text-gray-700 hover:text-divine transition-colors font-normal"
+              >
+                {aarti.title}
+              </Link>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );

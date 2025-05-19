@@ -1,15 +1,20 @@
 import React from 'react';
 import Header from '@/components/Header';
-import AartiList from '@/components/AartiList';
-import { aartiData } from '@/data/aartis';
+import { aartiData, deitySubtitles } from '@/data/aartis';
 import { Card } from "@/components/ui/card";
+import { Link } from 'react-router-dom';
+
+// Mapping from card deity names to actual aartiData deity names
+const deityDataNameMap: Record<string, string> = {
+  'श्री गणेश': 'श्री गणपती बाप्पा',
+  'श्री शिव': 'श्री शिव',
+  'श्री विष्णु': 'श्री विष्णु',
+  'श्री दुर्गा': 'श्री दुर्गा',
+  'श्री हनुमान': 'श्री हनुमान',
+  'श्री लक्ष्मी': 'श्री लक्ष्मी',
+};
 
 const Index = () => {
-  // Split aartiData into two halves
-  const mid = Math.ceil(aartiData.length / 2);
-  const leftAartis = aartiData.slice(0, mid);
-  const rightAartis = aartiData.slice(mid);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       <Header />
@@ -23,12 +28,36 @@ const Index = () => {
           </p>
         </Card>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-glow">
-          <div>
-            <AartiList aartis={leftAartis} />
-          </div>
-          <div>
-            <AartiList aartis={rightAartis} />
+        <div className="animate-glow">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Object.entries(deitySubtitles).map(([deity, subtitle]) => {
+              const mainName = deity.replace(/^श्री\s*/, '');
+              const circleLetter = mainName.charAt(0);
+              // Use mapping to find the correct aartiData deity name
+              const dataDeity = deityDataNameMap[deity] || deity;
+              const aarti = aartiData.find(a => a.deity === dataDeity);
+              return (
+                <Link
+                  key={deity}
+                  to={`/deity/${encodeURIComponent(deity)}`}
+                  className="hover:scale-105 transition-transform"
+                >
+                  <Card className="flex flex-col items-stretch justify-between h-64 bg-[#f5e9e6] border-0 shadow-md p-0 overflow-hidden">
+                    {/* Top section with circle */}
+                    <div className="flex-1 flex flex-col items-center justify-center bg-[#f5e9e6]">
+                      <div className="w-28 h-28 rounded-full bg-orange-100 flex items-center justify-center mb-4">
+                        <span className="text-5xl font-bold text-divine">{circleLetter}</span>
+                      </div>
+                    </div>
+                    {/* Bottom white section for text */}
+                    <div className="bg-white w-full pt-2 pb-4 px-2 rounded-b-lg flex flex-col items-center">
+                      <div className="text-xl font-bold text-divine mb-1 mt-2">{deity}</div>
+                      <div className="text-gray-700 text-base text-center">{subtitle}</div>
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -2,6 +2,15 @@ import ganeshAarti from './ganeshAarti';
 import hanumanAarti from './hanumanAarti';
 import ganeshAtharvashirsha from './ganeshAtharvashirsha';
 
+export const deitySubtitles: Record<string, string> = {
+  'श्री गणेश': 'सुखकर्ता दुःखहर्ता',
+  'श्री शिव': 'जय शिव ओंकारा',
+  'श्री विष्णु': 'ॐ जय जगदीश हरे',
+  'श्री दुर्गा': 'जय अंबे गौरी',
+  'श्री हनुमान': 'श्री हनुमान चालीसा',
+  'श्री लक्ष्मी': 'ॐ जय लक्ष्मी माता',
+};
+
 export const aartiData = [
   {
     id: "ganesh-aarti",
