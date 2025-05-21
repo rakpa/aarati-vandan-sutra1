@@ -17,7 +17,11 @@ const deityDataNameMap: Record<string, string> = {
 const DeityPage = () => {
   const { deity } = useParams<{ deity: string }>();
   const dataDeity = deityDataNameMap[deity || ''] || deity;
-  const aartis = aartiData.filter(a => a.deity === dataDeity);
+  const aartis = aartiData.filter(a =>
+    (dataDeity === 'श्री गणपती बाप्पा' && (a.deity === 'श्री गणपती बाप्पा' || a.deity === 'श्री गणेश')) ||
+    (dataDeity === 'श्री गणेश' && (a.deity === 'श्री गणपती बाप्पा' || a.deity === 'श्री गणेश')) ||
+    a.deity === dataDeity
+  );
   const subtitle = deitySubtitles[deity || ''] || '';
 
   return (
@@ -30,16 +34,20 @@ const DeityPage = () => {
           </h2>
           <p className="text-center text-gray-700 max-w-2xl mx-auto">{subtitle}</p>
         </Card>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {aartis.map(aarti => (
-            <Link key={aarti.id} to={`/aarti/${aarti.id}`} className="hover:scale-105 transition-transform">
-              <Card className="flex flex-col items-center justify-center h-40 bg-white border-divine/10 shadow-sm">
-                <div className="text-lg font-bold text-divine mb-2 text-center">{aarti.title}</div>
-                {/* Optionally, add a subtitle or icon here */}
-              </Card>
-            </Link>
-          ))}
-        </div>
+        <Card className="bg-white border-divine/10 shadow-sm p-6">
+          <ul className="list-disc list-inside">
+            {aartis.map((aarti, idx) => (
+              <li
+                key={aarti.id}
+                className={idx !== aartis.length - 1 ? "mb-4" : ""}
+              >
+                <Link to={`/aarti/${aarti.id}`} className="text-lg font-bold text-divine underline hover:underline">
+                  {aarti.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Card>
       </div>
     </div>
   );
